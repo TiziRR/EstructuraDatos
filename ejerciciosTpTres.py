@@ -66,3 +66,36 @@
 # cliente, y marcar el asiento como ocupado o reservado en el mapa. Además, se debe
 # proporcionar la funcionalidad de consultar la información del cliente que ha reservado un
 # lugar específico, permitiéndole ver sus datos de contacto .
+
+
+class Cine:
+    def __init__(self, filas=7, columnas=10):
+        self.filas = filas
+        self.columnas = columnas
+        self.asientos = [[{'reservado': False, 'cliente': None} for _ in range(columnas)] for _ in range(filas)]
+    
+    def mostrar_mapa(self):
+        for fila in self.asientos:
+            print(" ".join(['R' if asiento['reservado'] else 'V' for asiento in fila]))
+    
+    def reservar_asiento(self, fila, columna, nombre, telefono):
+        if not self.asientos[fila][columna]['reservado']:
+            self.asientos[fila][columna] = {'reservado': True, 'cliente': {'nombre': nombre, 'telefono': telefono}}
+            print(f"Se ha reservado el asiento ({fila+1},{columna+1}) para {nombre}.")
+        else:
+            print(f"El asiento ({fila+1},{columna+1}) ya está reservado.")
+    
+    def consultar_reserva(self, fila, columna):
+        asiento = self.asientos[fila][columna]
+        if asiento['reservado']:
+            cliente = asiento['cliente']
+            print(f"Asiento reservado por {cliente['nombre']}. Teléfono: {cliente['telefono']}")
+        else:
+            print(f"El asiento ({fila+1},{columna+1}) está vacío.")
+
+# Ejemplo de uso
+cine = Cine()
+cine.mostrar_mapa()
+cine.reservar_asiento(0, 1, 'Juan Pérez', '123456789')
+cine.mostrar_mapa()
+cine.consultar_reserva(0, 1)
